@@ -38,17 +38,17 @@ jobs:
         run: |
           npm ci --prefix app/travel
           npm run build --prefix app/travel
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: cap-build-${{ github.sha }}
           path: gen/
           retention-days: 14
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: fiori-build-${{ github.sha }}
           path: app/travel/dist/
           retention-days: 14
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage-${{ github.sha }}
