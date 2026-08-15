@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      sap-cap:
+        patterns: ["@sap/*", "@cap-js/*"]
+      development:
+        dependency-type: development
+  - package-ecosystem: npm
+    directory: /app/travel
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /app/router
+    schedule:
+      interval: weekly
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

@@ -1,0 +1,75 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "sflight.travel",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": { "version": "1.0.0" },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/travel/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "travel-manage": {
+          "semanticObject": "Travel",
+          "action": "manage",
+          "title": "{{appTitle}}"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": { "sap.m": {}, "sap.ui.core": {}, "sap.fe.templates": {} }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "sflight.travel.i18n.i18n" }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": { "operationMode": "Server", "autoExpandSelect": true, "earlyRequests": true }
+      }
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        { "pattern": ":?query:", "name": "TravelsList", "target": "TravelsList" },
+        { "pattern": "Travels({key}):?query:", "name": "TravelsObjectPage", "target": "TravelsObjectPage" }
+      ],
+      "targets": {
+        "TravelsList": {
+          "type": "Component",
+          "id": "TravelsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/Travels",
+              "variantManagement": "Page",
+              "navigation": { "Travels": { "detail": { "route": "TravelsObjectPage" } } }
+            }
+          }
+        },
+        "TravelsObjectPage": {
+          "type": "Component",
+          "id": "TravelsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": { "settings": { "contextPath": "/Travels", "editableHeaderContent": false } }
+        }
+      }
+    }
+  }
+}

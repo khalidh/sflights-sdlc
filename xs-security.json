@@ -1,0 +1,28 @@
+{
+  "xsappname": "sflight-cap-${space}",
+  "tenant-mode": "dedicated",
+  "description": "Autorisations de l'application SFLIGHT CAP",
+  "scopes": [
+    { "name": "$XSAPPNAME.TravelProcessor", "description": "Créer et maintenir les voyages ouverts" },
+    { "name": "$XSAPPNAME.TravelReviewer", "description": "Consulter, accepter et rejeter les voyages" },
+    { "name": "$XSAPPNAME.Administrator", "description": "Administrer l'application" }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "TravelProcessor",
+      "description": "Gestionnaire de voyages",
+      "scope-references": ["$XSAPPNAME.TravelProcessor"]
+    },
+    {
+      "name": "TravelReviewer",
+      "description": "Validateur de voyages",
+      "scope-references": ["$XSAPPNAME.TravelReviewer"]
+    },
+    {
+      "name": "Administrator",
+      "description": "Administrateur SFLIGHT",
+      "scope-references": ["$XSAPPNAME.Administrator", "$XSAPPNAME.TravelProcessor", "$XSAPPNAME.TravelReviewer"]
+    }
+  ]
+}

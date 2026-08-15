@@ -1,0 +1,3 @@
+ID;customerNumber;firstName;lastName;email;city;countryCode
+20000000-0000-4000-8000-000000000001;C0000001;Alice;Martin;alice.martin@example.com;Paris;FRA
+20000000-0000-4000-8000-000000000002;C0000002;Thomas;Schmidt;thomas.schmidt@example.com;Berlin;DEU

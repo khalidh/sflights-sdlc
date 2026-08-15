@@ -1,0 +1,19 @@
+name: Évolution fonctionnelle
+description: Proposer une nouvelle capacité métier
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes: { label: Besoin métier, description: Acteur, problème et valeur attendue }
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes: { label: Critères d'acceptation, description: Utiliser Given/When/Then si possible }
+    validations: { required: true }
+  - type: textarea
+    id: rules
+    attributes: { label: Règles métier et autorisations }
+  - type: textarea
+    id: dependencies
+    attributes: { label: Dépendances et impacts }

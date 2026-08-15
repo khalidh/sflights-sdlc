@@ -1,0 +1,9 @@
+node_modules
+gen
+coverage
+mta_archives
+resources
+app/**/dist
+db.sqlite
+package-lock.json
+*.csv

@@ -1,0 +1,51 @@
+name: Security
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  npm-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Auditer toutes les unités npm
+        run: |
+          npm ci
+          npm audit --audit-level=high
+          npm ci --prefix app/travel
+          npm audit --prefix app/travel --omit=dev --audit-level=high
+          npm ci --prefix app/router
+          npm audit --prefix app/router --omit=dev --audit-level=high
+      - name: Signaler les vulnérabilités des outils de build UI5
+        continue-on-error: true
+        run: npm audit --prefix app/travel --audit-level=high
+
+  codeql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+      - uses: github/codeql-action/analyze@v3

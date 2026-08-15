@@ -1,0 +1,11 @@
+node_modules
+gen
+coverage
+mta_archives
+.git
+.github
+db.sqlite
+*.log
+docs
+test
+

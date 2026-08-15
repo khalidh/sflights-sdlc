@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Qualité, tests et build CAP
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Déployer SQLite
+        run: npm run db:deploy
+      - name: Vérifier le formatage
+        run: npm run format:check
+      - name: Analyser CDS et JavaScript
+        run: npm run lint
+      - name: Tester avec couverture
+        run: npm run test:coverage
+      - name: Construire les artefacts HANA
+        run: npm run build
+      - name: Construire l'application Fiori
+        run: |
+          npm ci --prefix app/travel
+          npm run build --prefix app/travel
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cap-build-${{ github.sha }}
+          path: gen/
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fiori-build-${{ github.sha }}
+          path: app/travel/dist/
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-${{ github.sha }}
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  pull-request-policy:
+    name: Convention du titre de PR
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier Conventional Commits
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._/-]+\))?!?:\ .+ ]]; then
+            echo "Le titre doit respecter Conventional Commits, par exemple: feat(travel): ajouter une remise"
+            exit 1
+          fi

@@ -1,0 +1,12 @@
+{
+  "requires": {
+    "auth": {
+      "kind": "mocked",
+      "users": {
+        "processor": { "password": "processor", "roles": ["TravelProcessor"] },
+        "reviewer": { "password": "reviewer", "roles": ["TravelReviewer"] },
+        "admin": { "password": "admin", "roles": ["TravelProcessor", "TravelReviewer", "Administrator"] }
+      }
+    }
+  }
+}
