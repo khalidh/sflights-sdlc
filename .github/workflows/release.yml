@@ -31,7 +31,7 @@ jobs:
       - name: Construire le MTAR
         run: mbt build
       - name: Attester la provenance
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: mta_archives/*.mtar
       - uses: softprops/action-gh-release@v2
